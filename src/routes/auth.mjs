@@ -19,6 +19,7 @@ router.get("/api/auth/status", (request, response) => {
   console.log("Inside /api/auth/status");
   console.log(request.user);
   console.log(request.session);
+  console.log(request.sessionID);
   return request.user
     ? response.status(200).send(request.user)
     : response.status(401).send({ msg: "Not authenticated" });
