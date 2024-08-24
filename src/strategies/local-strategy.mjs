@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import { mockUsers } from "../utils/constants.mjs";
 import { User } from "../mongoose/schemas/users.mjs";
+import { comparePasswords } from "../utils/helpers.mjs";
 
 // Runs when the user logs in
 passport.serializeUser((user, done) => {
@@ -30,7 +31,8 @@ export default passport.use(
         username,
       });
       if (!findUser) throw new Error("User not found");
-      if (findUser.password !== password) throw new Error("Bad credentials");
+      if (!comparePasswords(password, findUser.password))
+        throw new Error("Bad credentials");
       done(null, findUser);
     } catch (error) {
       done(error, null);

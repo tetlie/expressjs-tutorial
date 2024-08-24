@@ -7,6 +7,7 @@ import {
 } from "../utils/validationSchemas.mjs";
 import { resolveIndexByUserId } from "../utils/middlewares.mjs";
 import { User } from "../mongoose/schemas/users.mjs";
+import { hashPassword } from "../utils/helpers.mjs";
 
 const router = Router();
 
@@ -44,6 +45,9 @@ router.post(
       return response.status(400).send({ errors: result.array() });
 
     const data = matchedData(request);
+    console.log("beforehash", data);
+    data.password = hashPassword(data.password);
+    console.log("afterhash", data);
 
     const newUser = new User(data);
     try {
